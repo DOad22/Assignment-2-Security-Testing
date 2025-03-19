@@ -1,5 +1,5 @@
 ---
-name: Super Lint
+name: Super Linter
 
 on:
   push:
@@ -10,17 +10,16 @@ on:
       - main
 
 jobs:
-  linter:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-      
-      - name: Lint code with Super Linter
+        uses: actions/checkout@v2
+
+      - name: Run Github Super-Linter
         uses: github/super-linter@v4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-          RUN_LOCAL: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: --languages python,yaml,javascript --disable all --enable python --enable yaml --enable javascript

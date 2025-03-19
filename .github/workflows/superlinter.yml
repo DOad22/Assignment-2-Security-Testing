@@ -28,13 +28,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
           RUN_LOCAL: true  
         with:
-          args: |
-            --languages yaml,javascript,python
-            --enable-all
-            --disable some-linters # Customize this as needed
-
+          # Use FILTER_REGEX_INCLUDE to specify the languages you want to lint
+          FILTER_REGEX_INCLUDE: '.*\.(yaml|yml|js|py)$'  
+          # Customize additional linter options or outputs here 
+          
       - name: Output Summary
         if: failure()  
         run: |
           echo "Linter errors detected:"
-          cat super-linter-output/super-linter-summary.md || echo "No summary file."
+          cat super-linter-output/super-linter-summary.md  

@@ -17,15 +17,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.13.1' 
-
       - name: Lint code with Super Linter
         uses: github/super-linter@v4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
           RUN_LOCAL: true
         with:
-          args: --enable python --disable all
+          args: --languages python,yaml,javascript --disable all --enable python --enable yaml --enable javascript

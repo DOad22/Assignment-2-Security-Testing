@@ -1,41 +1,25 @@
-name: Lint
+name: Super Lint
 
-on:
-  push: null
-  pull_request: null
-
-permissions: {}
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
-    name: Lint
+  lint:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      packages: read
-      statuses: write  
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.ref }} 
+        uses: actions/checkout@v2
 
-      - name: Super-linter
-        uses: super-linter/super-linter@v7.3.0  
+      - name: Lint with Super Linter
+        uses: github/super-linter@v4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-          RUN_LOCAL: true  
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_LOCAL: true
         with:
-          args: |
-            --languages yaml,javascript,python
-            --enable-all
-            --disable some-linters # Customize as needed
-
-      - name: Output Summary
-        if: failure()  
-        run: |
-          echo "Linter errors detected:"
-          cat super-linter-output/super-linter-summary.md || echo "No summary file."
+          args: --languages yaml,javascript,python

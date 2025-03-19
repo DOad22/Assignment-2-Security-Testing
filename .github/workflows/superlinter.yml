@@ -20,7 +20,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  
+          fetch-depth: 0
+          ref: ${{ github.ref }} 
 
       - name: Super-linter
         uses: super-linter/super-linter@v7.3.0  
@@ -28,12 +29,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
           RUN_LOCAL: true  
         with:
-          # Use FILTER_REGEX_INCLUDE to specify the languages you want to lint
-          FILTER_REGEX_INCLUDE: '.*\.(yaml|yml|js|py)$'  
-          # Customize additional linter options or outputs here 
-          
+          args: |
+            --languages yaml,javascript,python
+            --enable-all
+            --disable some-linters # Customize as needed
+
       - name: Output Summary
         if: failure()  
         run: |
           echo "Linter errors detected:"
-          cat super-linter-output/super-linter-summary.md  
+          cat super-linter-output/super-linter-summary.md || echo "No summary file."
